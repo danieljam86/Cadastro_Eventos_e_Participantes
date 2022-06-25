@@ -15,16 +15,21 @@ var ano = data.getFullYear();
 dataAtual = dia + '/' + mes + '/' + ano;
 let cadastro = ["Cadastrar Evento", "Participar de um Evento", "Cadastrar Palestrante", "Encerrar"];
 let escolha;
-let evento = [];
+
+let listaEventos = [];
 let nomeEvento;
 let dataEvento;
+
+let listaPartipantes = [];
 let nomeParticipante;
 let idadeParticipante;
+
+let listaPalestrantes = [];
 let nomePalestrante;
-let listaPartipantes = [];
-let qtdadeParticipantes;
-let eventoPalestrantesEParticipantes = new Object();
-let ParticipanteEvento = new Object();
+
+
+let listaEventosPalestrantesParticipantes = new Object();
+
 
 //Intrução do inicio do sistema
 console.log("CADASTRO DE EVENTO----------------");
@@ -32,7 +37,7 @@ console.log("DATA ATUAL------------------------");
 console.log(dataAtual+"------------------------");
 console.log("--------------INICIANDO------------------------");
 
-//Função para o menu
+
 Inicia();
 
 
@@ -69,6 +74,7 @@ function Inicia() {
 
 function CadastroEvento(){
     let result;
+
     do{    
         dataEvento = readlineSync.question('Qual e a data do evento? ');
         result = ValidaData(dataEvento)
@@ -86,16 +92,19 @@ function CadastroEvento(){
         Inicia();
     }else{
         nomeEvento = readlineSync.question('Qual e o nome do Evento? ');
-        evento.push(nomeEvento);
-        console.log(evento.length)
-        console.log(nomeEvento);
+        let novoEvento = new Object();
+        novoEvento.nomeEvento = nomeEvento;
+        novoEvento.dataEvento = dataEvento;
+        listaEventos.push(novoEvento);
+        listaEventosPalestrantesParticipantes.listaEventos = listaEventos;
+        console.log(listaEventos.length)
         Inicia();
     }
 }
 
 function CadastroParticipante(){
-    
-    if(evento.length == 0){
+
+    if(listaEventos.length == 0){
         console.log('======================================================================');
         console.log('Não existe evento disponível. Pelo menos um evento deve ser cadastrado');
         console.log('======================================================================');
@@ -109,26 +118,27 @@ function CadastroParticipante(){
         console.log('==================================================');
         Inicia();
     }else{
-        ParticipanteEvento.nomeParticipante = nomeParticipante;
-        ParticipanteEvento.idadeParticipante = idadeParticipante;
+        
         console.log('Escolha um evento informando a opcao(numero)');
         
-        for(var i = 0; i < evento.length; i++){
-            console.log("Opção: " + i +" - " + evento[i])
+        for(var i = 0; i < listaEventos.length; i++){
+            console.log("Opção: " + i +" - " + listaEventos[i])
         }
         do{
-            eventoPalestrantesEParticipantes.eventoID = readlineSync.question('Digite a opcao desejada? ');
-            if(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > evento.length -1){
+            escolha = readlineSync.question('Digite a opcao desejada? ');
+            if(listaEventosPalestrantesParticipantes.listaEventos.nomeEvento < 0 || listaEventosPalestrantesParticipantes.listaEventos.nomeEvento > listaEventos.length -1){
                 console.log('==================================================');
                 console.log("Ops... opcao invalida, tente novamente");
                 console.log('==================================================');
             }
-        }while(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > evento.length -1)
-        ParticipanteEvento.nomeParticipante = nomeParticipante
-        ParticipanteEvento.idadeParticipante = idadeParticipante
-        eventoPalestrantesEParticipantes.eventoID = evento[eventoPalestrantesEParticipantes.eventoID];
-        eventoPalestrantesEParticipantes.nomeEvento = evento[eventoPalestrantesEParticipantes.eventoID];
-        eventoPalestrantesEParticipantes.ParticipanteEvento = ParticipanteEvento;
+        }while(listaEventosPalestrantesParticipantes.listaEventos < 0 || listaEventosPalestrantesParticipantes.listaEventos > listaEventos.length -1)
+        //listaEventosPalestrantesParticipantes.nomeEvento = listaEventos[listaEventosPalestrantesParticipantes.nomeEvento];
+        //listaEventosPalestrantesParticipantes.dataEvento = listaEventos[listaEventosPalestrantesParticipantes.dataEvento];
+        let novoParticipante = new Object();
+        novoParticipante.nomeParticipante = nomeParticipante;
+        novoParticipante.idadeParticipante = idadeParticipante;
+        listaEventos[escolha].listaPartipantes = listaPartipantes.push(novoParticipante);
+        listaEventosPalestrantesParticipantes.listaEventos[escolha] = listaPartipantes;
         console.log('==================================================');
         console.log("Participante cadastrado com sucesso no evento!!");
         console.log('==================================================');
@@ -138,7 +148,7 @@ function CadastroParticipante(){
 }
 
 function CadastroPalestrante(){
-    if(evento.length == 0){
+    if(listaEventos.length == 0){
         console.log('======================================================================');
         console.log('Não existe evento disponível. Pelo menos um evento deve ser cadastrado');
         console.log('======================================================================');
@@ -147,17 +157,17 @@ function CadastroPalestrante(){
     nomePalestrante = readlineSync.question('Qual e o nome do palestrante? ');
     console.log('Escolha um evento informando a opcao(numero)');
     
-    for(var i = 0; i < evento.length; i++){
-        console.log("Opção: " + i +" - " + evento[i])
+    for(var i = 0; i < listaEventos.length; i++){
+        console.log("Opção: " + i +" - " + listaEventos[i])
     }
     do{
         eventoPalestrantesEParticipantes.eventoID = readlineSync.question('Digite a opcao desejada? ');
-        if(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > evento.length -1){
+        if(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > listaEventos.length -1){
             console.log('==================================================');
             console.log("Ops... opcao invalida, tente novamente");
             console.log('==================================================');
         }
-    }while(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > evento.length -1)
+    }while(eventoPalestrantesEParticipantes.eventoID < 0 || eventoPalestrantesEParticipantes.eventoID > listaEventos.length -1)
     ParticipanteEvento.nomePalestrante = nomePalestrante
     eventoPalestrantesEParticipantes.eventoID = evento[eventoPalestrantesEParticipantes.eventoID];
     eventoPalestrantesEParticipantes.nomeEvento = evento[eventoPalestrantesEParticipantes.eventoID];

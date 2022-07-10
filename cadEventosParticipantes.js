@@ -122,7 +122,7 @@ function CadastroParticipante(){
         console.log('Escolha um evento informando a opcao(numero)');
         
         for(var i = 0; i < listaEventos.length; i++){
-            console.log("Opção: " + i +" - " + listaEventos[i])
+            console.log("Opção: " + i +" - " + listaEventos[i].nomeEvento)
         }
         do{
             escolha = readlineSync.question('Digite a opcao desejada? ');
@@ -142,6 +142,11 @@ function CadastroParticipante(){
         console.log('==================================================');
         console.log("Participante cadastrado com sucesso no evento!!");
         console.log('==================================================');
+
+        for(var i = 0; i < listaEventos.length; i++){
+            console.log("Eventos: " + i +" - " + listaEventos[i].nomeEvento)
+        }
+
         Inicia();
     }
     
